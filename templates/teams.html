@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div>
+
+    {% if team %}
+        <h3>Welcome to {{team.mascot}}</h3>
+        <hr class="my-4">
+        <img src="{{team.logos}}" alt="school logo" class="img-thumbnail rounded w-25 mb-5" />
+
+        <ul>
+            <li>School: {{team.school}}</li>
+            <li>Mascot: {{team.mascot}}</li>
+            <li>Abbreviation: {{team.abbreviation}}</li>
+        </ul>
+
+        <a href="/conferences?conference_id={{team.conference_id}}">Team's Conference</a>
+    {% elif teams %}
+        <h3>List of Teams</h3>
+        <hr class="my-4">
+        <div class="mb-3">
+            <a href="register/team">Add a Team</a>
+        </div>
+        <ul>
+            {% for team in teams %}
+            <li class="mb-2"><a href="/teams?team_id={{team.id}}">{{team.school}} to {{team.mascot}}</a></li>
+            {% endfor %}
+
+        </ul>
+
+    {% endif %}
+</div>
+{% endblock %}

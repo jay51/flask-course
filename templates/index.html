@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">NCAA Football - All Conferences</h1>
+    <hr class="my-4">
+    {% if conferences %}
+        <ul>
+            {% for conf in conferences %}
+            <li class="mb-2">{{conf.name}} ({{conf.abbreviation}}) <a href="/conferences?conference_id={{conf.id}}">View</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <a class="mt-5 btn btn-primary btn-lg" href="/register/conference" role="button">Add Conference</a>
+  </div>
+{% endblock %}

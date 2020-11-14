@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div>
+    {% if conferences %}
+        <h2>NCAA Football - All Conferences</h2>
+        <div class="mb-3">
+            <a class="mt-5" href="/register/conference">Add Conference</a>
+        <div/>
+        <hr class="my-4">
+        <ul>
+            {% for conf in conferences %}
+            <li class="mb-2">{{conf.name}} ({{conf.abbreviation}}) <a href="/conferences?conference_id={{conf.id}}">View</a></li>
+            {% endfor %}
+
+        </ul>
+    {% elif teams %}
+        <h2>{{name}}</h2>
+        <hr class="my-4">
+        <h3>List of Teams</h3>
+        <ul>
+            {% for team in teams %}
+            <li class="mb-2"><a href="/teams?team_id={{team.id}}">{{team.school}} to {{team.mascot}}</a></li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div>
+    <h3>Add a Conference</h3>
+    <hr class="my-4">
+    {% if form %}
+        <form method="POST" action="/register/conference">
+            <div class="form-group">
+                {{ form.name.label }}
+                {{ form.name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.short_name.label }}
+                {{ form.short_name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.abbreviation.label }}
+                {{ form.abbreviation(class="form-control") }}
+            </div>
+            {% if form.errors %}
+                {% for error in form.errors %}<div class="alert alert-danger">{{ error }} you know what to do!</div>{% endfor %}
+            {% endif %}
+            <button class="btn btn-primary" type="submit">Create</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
