@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 
 class User(UserMixin, db.Model):
@@ -10,7 +11,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.Integer, default=1)
 
     # get all the teams through a secondary table that stores id for a user and id for a team
-    teams = db.relationship("Team", secondary="Follow")
+    teams = db.relationship("Team", secondary="follows")
 
     def __repl__(self):
         return "<User {username}, {email}, {role}>".format(
@@ -18,6 +19,12 @@ class User(UserMixin, db.Model):
             email=self.email,
             role=self.role,
         )
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class Conference(db.Model):
@@ -48,7 +55,7 @@ class Team(db.Model):
     conference_id = db.Column(db.Integer, db.ForeignKey("conferences.id"))
 
     # get all users part of this team through a secondary table that stores id for a user and id for a team
-    users = db.relationship("User", secondary="Follow")
+    users = db.relationship("User", secondary="follows")
 
     def __repr__(self):
         return "<Team {school}, {mascot}, {abbreviation} {logos} {conference_id}>".format(
@@ -82,4 +89,4 @@ class Follow(db.Model):
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id"))
 
     def __repl__(self):
-        return "<Follow {user_id}, {team_id}>".format( user_id=self.user_id, team_id=self.team_id)
+        return "<Follow {user_id}, {team_id}>".format(user_id=self.user_id, team_id=self.team_id)

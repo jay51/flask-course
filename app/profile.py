@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from .modles import User
 from . import db
@@ -26,7 +25,7 @@ def profile():
             password        = request.form.get("password")
             user.email      = email if email else user.email
             user.username   = username if username else user.username
-            user.password   = generate_password_hash(password) if password else user.password
+            user.password   = user.set_password(password) if password else user.password
 
             db.session.commit()
             flash("Your Profile has been updated seccusfly!")
