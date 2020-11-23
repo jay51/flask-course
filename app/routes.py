@@ -1,8 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from wtforms import Form, StringField, validators
-from .modles import User, Conference, Team
+from flask_login import login_required, current_user
+
+from .modles import User, Conference, Team, Comment
+from . import db
 
 main = Blueprint("main", __name__)
+
 # Form stuff
 class ConferenceForm(Form):
     name            = StringField("name", [validators.Length(min=4, max=25)])
@@ -12,7 +16,9 @@ class ConferenceForm(Form):
 @main.route("/")
 def index():
     conferences = Conference.query.all()
-    return render_template("index.html", conferences=conferences)
+    teams = Team.query.all()
+    #print("something ", Team.comments)
+    return render_template("index.html", conferences=conferences, teams=teams)
 
 @main.route("/conferences")
 def conferences():
@@ -78,8 +84,23 @@ def register_team():
     conferences = Conference.query.all()
     return render_template("register_team.html", conferences=conferences, errors=errors)
 
+@main.route("/teams/comments/", methods=["POST"])
+@login_required
+def comments():
+    if request.method == "POST":
+        team_id = request.args.get("team_id", None)
+        comment = request.form.get("comment", None)
+        team = Team.query.filter_by(id=team_id).first()
+        if not team_id or not team or not comment:
+            flash("Somthing went wrong!")
+            return redirect(url_for("main.teams"))
 
-@main.route("/about")
-def about():
-    return render_template("about.html")
+
+        new_comment = Comment(comment=comment)
+        new_comment.user_id = current_user.id
+        new_comment.team_id = team.id
+        db.session.add(new_comment)
+        db.session.commit()
+
+        return redirect(url_for("main.teams", team_id=team_id))
 

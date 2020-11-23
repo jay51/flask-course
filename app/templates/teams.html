@@ -15,6 +15,18 @@
         </ul>
 
         <a href="/conferences?conference_id={{team.conference_id}}">Team's Conference</a>
+
+        <div class="col-sm-6 col-md-8">
+            <h4>Add comment</h4>
+            <form method="POST" action="{{url_for('main.comments', team_id=team.id)}}">
+              <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea class="form-control" name="comment" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Comment</button>
+            </form>
+        </div>
+
     {% elif teams %}
         <h3>List of Teams</h3>
         <hr class="my-4">

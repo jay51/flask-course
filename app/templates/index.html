@@ -1,16 +1,56 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="jumbotron">
-    <h1 class="display-4">NCAA Football - All Conferences</h1>
-    <hr class="my-4">
-    {% if conferences %}
-        <ul>
-            {% for conf in conferences %}
-            <li class="mb-2">{{conf.name}} ({{conf.abbreviation}}) <a href="/conferences?conference_id={{conf.id}}">View</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <a class="mt-5 btn btn-primary btn-lg" href="/register/conference" role="button">Add Conference</a>
-  </div>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">NCAA Football - All Conferences</h1>
+        <hr class="my-4">
+        {% if conferences %}
+            <ul>
+                {% for conf in conferences %}
+                    <li class="mb-2">
+                        {{conf.name}} ({{conf.abbreviation}}) <a href="/conferences?conference_id={{conf.id}}">View</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+      <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+      </p>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row">
+        {% for team in teams %}
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="{{team.logos}}" alt="Card image cap">
+
+                <div class="card-body">
+                    <ul>
+                        <li>School: {{team.school}}</li>
+                        <li>Mascot: {{team.mascot}}</li>
+                        <li>Abbreviation: {{team.abbreviation}}</li>
+                    </ul>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="row">
+                            <a class="btn btn-success mr-2" href="{{url_for('main.teams', team_id=team.id)}}" role="button">Team</a>
+                            <a class="btn btn-success" href="{{url_for('main.conferences', conference_id=team.conference_id)}}" role="button">Conference</a>
+                        </div>
+                        <small class="text-muted">show user 9 mins</small>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+</div>
 {% endblock %}
