@@ -6,6 +6,7 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://jay:pass@localhost:5432/itse2302"
+# app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "HALO"
 db = SQLAlchemy(app)
 login_manager = LoginManager()

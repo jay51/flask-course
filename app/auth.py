@@ -17,11 +17,11 @@ def login():
         remember        = True if request.form.get("remember") else False
 
         user = User.query.filter_by(email=email).first()
-        login_user(user, remember=remember)
         if not user or not user.check_password(password):
             flash("Please check your login details and try again.!")
             return redirect(url_for("auth.login"))
 
+        login_user(user, remember=remember)
         flash('Logged in successfully.')
         next = request.args.get('next')
 

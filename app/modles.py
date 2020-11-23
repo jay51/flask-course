@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     username = db.Column(db.String(1000))
-    role = db.Column(db.Integer, default=1)
+    role = db.Column(db.Integer, default=1) # role 0 is admin
 
     # get all the teams through a secondary table that stores id for a user and id for a team
     teams = db.relationship("Team", secondary="follows")
@@ -36,6 +36,9 @@ class Conference(db.Model):
     # each conference will have many teams
     teams = db.relationship("Team")
 
+    # The user who created this conference
+    # user_creater = db.Column(db.Integer, db.ForeignKey("users.id"))
+
     def __repr__(self):
         return "<Conference {name}, {short_name}, {abbreviation}>".format(
             name=self.name,
@@ -54,8 +57,13 @@ class Team(db.Model):
     # each team will have one conference, foreignkey to conference
     conference_id = db.Column(db.Integer, db.ForeignKey("conferences.id"))
 
+    # The user who created this team
+    # user_creater = db.Column(db.Integer, db.ForeignKey("users.id"))
+
     # get all users part of this team through a secondary table that stores id for a user and id for a team
     users = db.relationship("User", secondary="follows")
+    comments = db.relationship("Comment")
+
 
     def __repr__(self):
         return "<Team {school}, {mascot}, {abbreviation} {logos} {conference_id}>".format(
