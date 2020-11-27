@@ -43,7 +43,7 @@
                             <a class="btn btn-success mr-2" href="{{url_for('main.teams', team_id=team.id)}}" role="button">Team</a>
                             <a class="btn btn-success" href="{{url_for('main.conferences', conference_id=team.conference_id)}}" role="button">Conference</a>
                         </div>
-                        <small class="text-muted">show user 9 mins</small>
+                        <small class="text-muted">{{team.create_date.strftime('%Y-%b-%d')}}</small>
                     </div>
                 </div>
 

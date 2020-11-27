@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from wtforms import Form, StringField, validators
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 
 from .modles import User, Conference, Team, Comment, Follow
 from . import db
@@ -16,7 +17,7 @@ class ConferenceForm(Form):
 @main.route("/")
 def index():
     conferences = Conference.query.all()
-    teams = Team.query.all()
+    teams = Team.query.order_by(desc(Team.create_date)).all()
     return render_template("index.html", conferences=conferences, teams=teams)
 
 @main.route("/conferences")
@@ -43,7 +44,7 @@ def register_conference():
         )
         db.session.add(new_conf)
         db.session.commit()
-        return redirect(url_for("conferences"))
+        return redirect(url_for("main.conferences"))
 
     return render_template("register_conference.html", form=form)
 
@@ -51,10 +52,10 @@ def register_conference():
 @main.route("/teams")
 def teams():
     team_id = request.args.get("team_id", None)
-    print(current_user)
     if team_id is not None:
         team = Team.query.filter_by(id=team_id).first()
-        comments = team.comments
+        comments = team.comments if team is not None else None
+
         is_following = None
         if current_user.is_authenticated:
             is_following = Follow.query.filter_by(
@@ -91,7 +92,7 @@ def register_team():
             # print(new_team)
             db.session.add(new_team)
             db.session.commit()
-            return redirect(url_for("teams"))
+            return redirect(url_for("main.teams"))
 
     conferences = Conference.query.all()
     return render_template("register_team.html", conferences=conferences, errors=errors)

@@ -1,5 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+
 from . import db
 
 class User(UserMixin, db.Model):
@@ -49,13 +51,14 @@ class Conference(db.Model):
 
 class Team(db.Model):
     __tablename__ = "teams"
-    id = db.Column(db.Integer, primary_key=True)
-    school = db.Column(db.String, nullable=False)
-    mascot = db.Column(db.String, nullable=False)
-    abbreviation = db.Column(db.String, nullable=False)
-    logos = db.Column(db.String, nullable=False)
+    id                  = db.Column(db.Integer, primary_key=True)
+    school              = db.Column(db.String, nullable=False)
+    mascot              = db.Column(db.String, nullable=False)
+    abbreviation        = db.Column(db.String, nullable=False)
+    logos               = db.Column(db.String, nullable=False)
+    create_date         = db.Column(db.DateTime, default=datetime.utcnow)
     # each team will have one conference, foreignkey to conference
-    conference_id = db.Column(db.Integer, db.ForeignKey("conferences.id"))
+    conference_id       = db.Column(db.Integer, db.ForeignKey("conferences.id"))
 
     # The user who created this team
     # user_creater = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -77,14 +80,15 @@ class Team(db.Model):
 
 class Comment(db.Model):
     __tablename__ = "comments"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    id          = db.Column(db.Integer, primary_key=True)
+    create_date = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id     = db.Column(db.Integer, db.ForeignKey("users.id"))
     # will query for you the user
-    user = db.relationship("User")
-    team_id = db.Column(db.Integer, db.ForeignKey("teams.id"))
     # will query for you the team
-    team = db.relationship("Team")
-    comment = db.Column(db.String, nullable=False)
+    user        = db.relationship("User")
+    team_id     = db.Column(db.Integer, db.ForeignKey("teams.id"))
+    team        = db.relationship("Team")
+    comment     = db.Column(db.String, nullable=False)
 
     def __repl__(self):
         return "<Comment {user_id}, {team_id}, {comment}>".format(

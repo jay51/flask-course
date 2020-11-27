@@ -4,6 +4,7 @@ import csv
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from datetime import datetime
 
 def create_tables(conn):
     conn.execute(
@@ -48,10 +49,10 @@ def import_records(conn):
         csv_file = csv.reader(f)
         next(csv_file) # first row is table fields
         for id, school, mascot, abbreviation, conference_id, logos in csv_file:
-            query = "INSERT INTO teams(school, mascot, abbreviation, logos, conference_id) VALUES('{school}', '{mascot}', '{abbreviation}', '{logos}', {conference_id})".format(
+            query = "INSERT INTO teams(school, mascot, abbreviation, logos, conference_id, create_date) VALUES('{school}', '{mascot}', '{abbreviation}', '{logos}', {conference_id}, '{create_date}')".format(
                     school=school, mascot=mascot,
                     abbreviation=abbreviation, logos=logos,
-                    conference_id=conference_id
+                    conference_id=conference_id, create_date=datetime.utcnow()
             )
             conn.execute(query)
 
