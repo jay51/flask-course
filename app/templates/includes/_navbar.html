@@ -23,9 +23,12 @@
         </li>
 
         {% if current_user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="/profile">Hi {{ current_user.username }}</a>
-            </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">Hi {{ current_user.username }}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">log out</a>
+        </li>
         {% endif %}
 
       </ul>

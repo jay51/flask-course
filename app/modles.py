@@ -79,7 +79,11 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # will query for you the user
+    user = db.relationship("User")
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id"))
+    # will query for you the team
+    team = db.relationship("Team")
     comment = db.Column(db.String, nullable=False)
 
     def __repl__(self):

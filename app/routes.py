@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from wtforms import Form, StringField, validators
 from flask_login import login_required, current_user
 
-from .modles import User, Conference, Team, Comment
+from .modles import User, Conference, Team, Comment, Follow
 from . import db
 
 main = Blueprint("main", __name__)
@@ -17,7 +17,6 @@ class ConferenceForm(Form):
 def index():
     conferences = Conference.query.all()
     teams = Team.query.all()
-    #print("something ", Team.comments)
     return render_template("index.html", conferences=conferences, teams=teams)
 
 @main.route("/conferences")
@@ -52,9 +51,22 @@ def register_conference():
 @main.route("/teams")
 def teams():
     team_id = request.args.get("team_id", None)
+    print(current_user)
     if team_id is not None:
         team = Team.query.filter_by(id=team_id).first()
-        return render_template("teams.html", team=team)
+        comments = team.comments
+        is_following = None
+        if current_user.is_authenticated:
+            is_following = Follow.query.filter_by(
+                user_id=current_user.id,
+                team_id=team_id,
+            ).first() is not None
+
+        return render_template("teams.html",
+            team=team,
+            comments=comments,
+            is_following=is_following,
+        )
 
     teams = Team.query.all()
     return render_template("teams.html", teams=teams)
@@ -66,7 +78,7 @@ def register_team():
     if request.method == "POST":
         for key, value in request.form.to_dict().items():
             if not value or len(value) < 2 and key != "conference_id":
-                errors.mainend("{value} is not valid value for {key}".format(key=key.upper(), value=value))
+                errors.append("{value} is not valid value for {key}".format(key=key.upper(), value=value))
 
         if len(errors) == 0:
             new_team = Team(

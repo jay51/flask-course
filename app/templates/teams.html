@@ -1,10 +1,19 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div>
-
+<section>
     {% if team %}
-        <h3>Welcome to {{team.mascot}}</h3>
+        <h3 class="d-inline">Welcome to {{team.mascot}}</h3>
+        {% if current_user %}
+            <form class="d-inline ml-2" method="POST" action="{{url_for('profile.user_follow')}}">
+                <input class="d-none" name="team_id" value={{team.id}} />
+                {% if is_following %}
+                    <button type="submit" class="mb-3 btn btn-danger">Unfollow</button>
+                {% else %}
+                    <button type="submit" class="mb-3 btn btn-primary">Follow</button>
+                {% endif %}
+            </form>
+        {% endif %}
         <hr class="my-4">
         <img src="{{team.logos}}" alt="school logo" class="img-thumbnail rounded w-25 mb-5" />
 
@@ -15,6 +24,19 @@
         </ul>
 
         <a href="/conferences?conference_id={{team.conference_id}}">Team's Conference</a>
+
+        <h1>Comments</h1>
+        <div class="col-sm-5 col-md-6 col-12 pb-4">
+        {% for comment in comments %}
+            <div class="darker mt-4 text-justify"> <img src="https://i.imgur.com/CFpa3nK.jpg" alt="avator" class="rounded-circle" width="40" height="40">
+                <h4 class="d-inline">
+                    <a href="{{url_for('profile.show_user_profile', user_id=comment.user.id)}}">{{comment.user.username}}</a>
+                </h4>
+                <span>- 20 October, 2018</span>
+                <p class="mt-4">{{comment.comment}}</p>
+            </div>
+        {% endfor %}
+        </div>
 
         <div class="col-sm-6 col-md-8">
             <h4>Add comment</h4>
@@ -39,7 +61,7 @@
             {% endfor %}
 
         </ul>
-
     {% endif %}
-</div>
+
+</section>
 {% endblock %}
