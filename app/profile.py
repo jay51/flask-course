@@ -19,7 +19,7 @@ def profile():
         ).first()
 
         if not user:
-            flash("Please check your login details and try again.!")
+            flash("Please check your login details and try again.!", "alert-warning")
         else:
             email           = request.form.get("email")
             username        = request.form.get("username")
@@ -29,7 +29,7 @@ def profile():
             user.password   = user.set_password(password) if password else user.password
 
             db.session.commit()
-            flash("Your Profile has been updated seccusfly!")
+            flash("Your Profile has been updated seccusfly!", "alert-success")
 
         return redirect(url_for("profile.profile"))
 
@@ -62,7 +62,7 @@ def user_follow():
         if team is not None and not following:
             new_follow = Follow(user_id=current_user.id, team_id=team.id)
             db.session.add(new_follow)
-            flash("You started following {name}".format(name=team.mascot))
+            flash("You started following {name}".format(name=team.mascot), "alert-success")
         else:
             # if user is already following then unfollow
             db.session.delete(following)
@@ -70,7 +70,7 @@ def user_follow():
         db.session.commit()
 
     else:
-        flash("Something Went wrong!")
+        flash("Something Went wrong!", "alert-danger")
 
     return redirect(request.referrer or url_for("main.index"))
 

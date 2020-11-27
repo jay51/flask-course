@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from wtforms import Form, StringField, validators
 from flask_login import login_required, current_user
 from sqlalchemy import desc
@@ -105,7 +105,7 @@ def comments():
         comment = request.form.get("comment", None)
         team = Team.query.filter_by(id=team_id).first()
         if not team_id or not team or not comment:
-            flash("Somthing went wrong!")
+            flash("Somthing went wrong!", "alert-danger")
             return redirect(url_for("main.teams"))
 
 
@@ -114,6 +114,7 @@ def comments():
         new_comment.team_id = team.id
         db.session.add(new_comment)
         db.session.commit()
+        flash("Thank you for commenting!", "alert-success")
 
         return redirect(url_for("main.teams", team_id=team_id))
 

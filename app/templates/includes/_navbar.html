@@ -15,22 +15,28 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/conferences">Conferences</a>
+          <a class="nav-link" href="{{url_for('main.conferences')}}">Conferences</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/teams">Teams</a>
+          <a class="nav-link" href="{{url_for('main.teams')}}">Teams</a>
         </li>
 
         {% if current_user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="/profile">Hi {{ current_user.username }}</a>
+          <a class="nav-link" href="{{url_for('profile.profile')}}">Hi {{ current_user.username }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/logout">log out</a>
+          <a class="nav-link" href="{{url_for('auth.logout')}}">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('auth.login')}}">Log In</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('auth.signup')}}">Sign up</a>
         </li>
         {% endif %}
-
       </ul>
     </div>
   </div>

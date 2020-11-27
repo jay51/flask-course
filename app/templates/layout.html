@@ -11,27 +11,37 @@
   </head>
 
   <body>
-
     {% include 'includes/_navbar.html' %}
 
-    <main role="main" class="container">
-      <div class="container">
-        <div class="starter-template">
-          <hr style="padding-top: 100px;">
-          {% block body %}
-          {% endblock %}
+    <main role="main" class="container mt-5 pt-3">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div class="notification is-danger">
+                {% for category, message in messages %}
+                    <div class="alert {{category}}">
+                        <strong>{{ message }}</strong>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="container">
+            <div class="starter-template">
+              <hr />
+              {% block body %}
+              {% endblock %}
+            </div>
         </div>
-      </div>
-
     </main><!-- /.container -->
+
     <footer class="mt-5 text-muted">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-        </p>
-        <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-        <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
-      </div>
+        <div class="container">
+            <p class="float-right">
+              <a href="#">Back to top</a>
+            </p>
+            <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+            <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
+        </div>
     </footer>
 
     <!-- Bootstrap core JavaScript -->

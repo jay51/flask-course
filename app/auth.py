@@ -18,11 +18,11 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if not user or not user.check_password(password):
-            flash("Please check your login details and try again.!")
+            flash("Please check your login details and try again.!", "alert-warning")
             return redirect(url_for("auth.login"))
 
         login_user(user, remember=remember)
-        flash('Logged in successfully.')
+        flash('Logged in successfully.', "alert-success")
         next = request.args.get('next')
 
         if not is_safe_url(next):
@@ -43,14 +43,14 @@ def signup():
         username        = request.form.get("username")
         # if there's a user with that email, send him to back to signup
         if User.query.filter_by(email=email).first():
-            flash("Email address already exists!")
+            flash("Email address already exists!", "alert-warning")
             return redirect(url_for("auth.signup"))
 
         new_user = User( email=email, username=username)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
-        flash("User has been created seccusfly!")
+        flash("User has been created seccusfly!", "alert-success")
         return redirect(url_for("auth.login"))
 
     return render_template("signup.html")
@@ -60,7 +60,7 @@ def signup():
 @login_required
 def logout():
     logout_user()
-    flash("User has been loged out!")
+    flash("User has been loged out!", "alert-success")
     return redirect(url_for("main.index"))
 
 from urllib.parse import urlparse, urljoin
