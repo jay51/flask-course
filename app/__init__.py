@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="./web/templates")
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://jay:pass@localhost:5432/itse2302"
 # app.config["SQLALCHEMY_ECHO"] = True
 app.config["SECRET_KEY"] = "HALO"
@@ -21,11 +21,17 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-from .auth import auth as auth_blueprint
-from .profile import user_profile as profile_blueprint
-from .routes import main as main_blueprint
+from .web import auth_blueprint
+from .web import profile_blueprint
+from .web import main_blueprint
+
+from .api import teams_blueprint
+from .api import conferences_blueprint
 
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(profile_blueprint)
 app.register_blueprint(main_blueprint)
+
+app.register_blueprint(teams_blueprint)
+app.register_blueprint(conferences_blueprint)
 

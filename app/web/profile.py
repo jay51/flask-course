@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
-from .modles import User, Follow, Team
+from . import User, Follow, Team
 from . import db
 
 user_profile = Blueprint("profile", __name__)
