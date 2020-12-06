@@ -5,7 +5,7 @@
 <div class="column is-4 is-offset-4">
     <h3 class="title">Sign Up</h3>
     <div class="box">
-        <form method="POST" action="/signup">
+        <form method="POST" action="{{url_for('auth.signup')}}">
             <div class="form-group w-50">
                     <input class="form-control" type="email" name="email" placeholder="Email" autofocus>
             </div>

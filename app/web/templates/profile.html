@@ -9,7 +9,7 @@
 
     <div class="col-sm-6 col-md-8">
         <h4>{{"User" if current_user.role else "Admin" }} - {{current_user.username}}</h4>
-        <form method="POST" action="/profile">
+        <form method="POST" action="{{url_for('profile.profile')}}">
           <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" name="username" value="{{current_user.username}}" placeholder="Enter username">

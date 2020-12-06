@@ -23,7 +23,7 @@
             <li>Abbreviation: {{team.abbreviation}}</li>
         </ul>
 
-        <a href="/conferences?conference_id={{team.conference_id}}">Team's Conference</a>
+        <a href="{{url_for('main.conferences', conference_id=team.conference_id)}}">Team's Conference</a>
 
         <h1>Comments</h1>
         <div class="col-sm-5 col-md-6 col-12 pb-4">
@@ -53,11 +53,11 @@
         <h3>List of Teams</h3>
         <hr class="my-4">
         <div class="mb-3">
-            <a href="register/team">Add a Team</a>
+            <a href="{{url_for('main.register_team')}}">Add a Team</a>
         </div>
         <ul>
             {% for team in teams %}
-            <li class="mb-2"><a href="/teams?team_id={{team.id}}">{{team.school}} to {{team.mascot}}</a></li>
+            <li class="mb-2"><a href="{{url_for('main.teams', team_id=team.id)}}">{{team.school}} to {{team.mascot}}</a></li>
             {% endfor %}
 
         </ul>

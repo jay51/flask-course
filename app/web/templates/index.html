@@ -9,7 +9,7 @@
             <ul>
                 {% for conf in conferences %}
                     <li class="mb-2">
-                        {{conf.name}} ({{conf.abbreviation}}) <a href="/conferences?conference_id={{conf.id}}">View</a>
+                        {{conf.name}} ({{conf.abbreviation}}) <a href="{{url_for('main.conferences', conference_id=conf.id)}}">View</a>
                     </li>
                 {% endfor %}
             </ul>

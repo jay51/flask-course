@@ -5,7 +5,7 @@
     <h3>Add a Conference</h3>
     <hr class="my-4">
     {% if form %}
-        <form method="POST" action="/register/conference">
+        <form method="POST" action="{{url_for('main.register_conference')}}">
             <div class="form-group">
                 {{ form.name.label }}
                 {{ form.name(class="form-control") }}
